@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">DramaPlant flower icon</title>
+  <rect width="64" height="64" rx="16" fill="#ffd34e"/>
+  <path d="M32 54V32M32 43c-10-1-15-5-18-12 9-2 16 1 18 12Zm0-6c9-1 14-5 17-12-9-2-15 2-17 12Z" fill="#55b976" stroke="#173e35" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+  <circle cx="32" cy="20" r="8" fill="#fff4bc" stroke="#173e35" stroke-width="3"/>
+  <circle cx="32" cy="9" r="8" fill="#ff755f" stroke="#173e35" stroke-width="3"/>
+  <circle cx="43" cy="18" r="8" fill="#ff755f" stroke="#173e35" stroke-width="3"/>
+  <circle cx="39" cy="30" r="8" fill="#ff755f" stroke="#173e35" stroke-width="3"/>
+  <circle cx="25" cy="30" r="8" fill="#ff755f" stroke="#173e35" stroke-width="3"/>
+  <circle cx="21" cy="18" r="8" fill="#ff755f" stroke="#173e35" stroke-width="3"/>
+  <circle cx="32" cy="20" r="6" fill="#ffd34e" stroke="#173e35" stroke-width="3"/>
+</svg>

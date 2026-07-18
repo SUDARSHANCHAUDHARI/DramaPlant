@@ -1,0 +1,17 @@
+{
+  "name": "DramaPlant",
+  "short_name": "DramaPlant",
+  "description": "A tiny interactive plant with very big feelings about being watered.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fff4bc",
+  "theme_color": "#ffd34e",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

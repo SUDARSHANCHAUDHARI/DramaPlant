@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="description"
+      content="DramaPlant is a tiny interactive plant with very big feelings about being watered."
+    >
+    <meta name="referrer" content="no-referrer">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; connect-src 'none'; form-action 'none'; img-src 'self' data:; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; manifest-src 'self'"
+    >
+    <meta name="theme-color" content="#ffcf4a">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DramaPlant — Water at your own risk">
+    <meta
+      property="og:description"
+      content="A tiny interactive plant with enormous feelings about being watered."
+    >
+    <title>DramaPlant — Water at your own risk</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to the plant</a>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="DramaPlant home">
+        <span class="brand-mark" aria-hidden="true">✿</span>
+        <span>DramaPlant</span>
+      </a>
+      <p class="tagline">A tiny plant with enormous boundaries.</p>
+      <div class="header-actions" aria-label="Game controls">
+        <button class="icon-button" id="sound-toggle" type="button" aria-pressed="true">
+          <span class="button-icon" aria-hidden="true">♪</span>
+          <span id="sound-label">Sound on</span>
+        </button>
+        <button class="icon-button" id="reset-button" type="button">
+          <span class="button-icon" aria-hidden="true">↻</span>
+          <span>Reset</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="game-layout" id="main-content">
+      <section class="stage-panel" aria-labelledby="stage-title">
+        <div class="stage-heading">
+          <div>
+            <p class="eyebrow">Today at the tiny botanical theatre</p>
+            <h1 id="stage-title">Water at your own risk.</h1>
+          </div>
+          <div class="mood-chip" aria-label="Current plant mood">
+            <span class="mood-face" id="mood-face" aria-hidden="true">•ᴗ•</span>
+            <span id="mood-chip-text">Suspicious</span>
+          </div>
+        </div>
+
+        <div class="game-stage" id="game-stage">
+          <div class="sun-rays" aria-hidden="true"></div>
+          <div class="stage-status" id="stage-status" aria-hidden="true">
+            The plant is watching the watering can.
+          </div>
+
+          <svg
+            class="room-scene"
+            id="room-scene"
+            viewBox="0 0 800 600"
+            role="img"
+            aria-labelledby="scene-title scene-description"
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <title id="scene-title">A small plant waiting in a sunny room</title>
+            <desc id="scene-description">
+              A leafy plant sits in a terracotta flowerpot beneath a sunny window. A watering can can
+              be moved over it.
+            </desc>
+            <defs>
+              <linearGradient id="window-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#8ed8ff"></stop>
+                <stop offset="1" stop-color="#dff6ff"></stop>
+              </linearGradient>
+              <linearGradient id="pot-clay" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f38a60"></stop>
+                <stop offset="1" stop-color="#bd4e3c"></stop>
+              </linearGradient>
+              <filter id="soft-shadow" x="-30%" y="-30%" width="160%" height="180%">
+                <feDropShadow dx="0" dy="12" stdDeviation="9" flood-color="#174535" flood-opacity="0.18"></feDropShadow>
+              </filter>
+              <pattern id="rug-pattern" width="34" height="34" patternUnits="userSpaceOnUse">
+                <path d="M0 17H34M17 0V34" stroke="#247d5a" stroke-width="3" opacity="0.18"></path>
+              </pattern>
+            </defs>
+
+            <g class="room-background" aria-hidden="true">
+              <rect width="800" height="600" fill="#fff4bc"></rect>
+              <rect x="0" y="462" width="800" height="138" fill="#d9a96b"></rect>
+              <path d="M0 486H800" stroke="#9f754d" stroke-width="8"></path>
+              <rect x="54" y="58" width="242" height="248" rx="18" fill="#285f55"></rect>
+              <rect x="68" y="72" width="214" height="220" rx="8" fill="url(#window-sky)"></rect>
+              <circle cx="224" cy="118" r="34" fill="#ffd34e"></circle>
+              <path d="M85 148c31-28 66-14 72 9 23-17 61-4 61 24H85z" fill="#fff" opacity="0.88"></path>
+              <path d="M68 208c51-36 92-2 100 18 37-29 86-5 114 13v53H68z" fill="#71b985" opacity="0.72"></path>
+              <path d="M175 72V292M68 182H282" stroke="#285f55" stroke-width="12"></path>
+              <path d="M48 314H304" stroke="#285f55" stroke-linecap="round" stroke-width="22"></path>
+              <g transform="translate(667 89)">
+                <rect width="79" height="106" rx="10" fill="#fffaf0" stroke="#285f55" stroke-width="7"></rect>
+                <path d="M17 73 36 50l13 15 12-17" fill="none" stroke="#e6674f" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"></path>
+                <circle cx="28" cy="31" r="10" fill="#ffd34e"></circle>
+              </g>
+              <ellipse cx="421" cy="546" rx="248" ry="42" fill="#fff0ab"></ellipse>
+              <ellipse cx="421" cy="546" rx="248" ry="42" fill="url(#rug-pattern)"></ellipse>
+              <path d="M70 426c31-20 49-20 78 0" fill="none" stroke="#fff8dc" stroke-linecap="round" stroke-width="12"></path>
+              <circle cx="90" cy="410" r="10" fill="#ef6c51"></circle>
+              <circle cx="126" cy="406" r="10" fill="#ef6c51"></circle>
+            </g>
+
+            <rect id="watering-target" x="302" y="220" width="210" height="236" fill="transparent"></rect>
+
+            <g id="plant-actor" class="plant-actor" filter="url(#soft-shadow)" aria-hidden="true">
+              <g id="plant-legs" class="plant-legs">
+                <path d="M382 426c-10 26-17 42-31 58" fill="none" stroke="#285f55" stroke-linecap="round" stroke-width="9"></path>
+                <path d="M414 426c11 25 21 42 39 52" fill="none" stroke="#285f55" stroke-linecap="round" stroke-width="9"></path>
+                <path d="M335 486h27M442 482h28" stroke="#285f55" stroke-linecap="round" stroke-width="9"></path>
+              </g>
+
+              <g id="healthy-crown" class="healthy-crown">
+                <path d="M399 366c-72-46-102-91-93-136M402 351c65-45 96-91 89-139" fill="none" stroke="#2b8453" stroke-linecap="round" stroke-width="12"></path>
+                <ellipse cx="315" cy="245" rx="43" ry="23" transform="rotate(34 315 245)" fill="#3ea76a"></ellipse>
+                <ellipse cx="287" cy="203" rx="44" ry="24" transform="rotate(-25 287 203)" fill="#2f915b"></ellipse>
+                <ellipse cx="484" cy="225" rx="44" ry="24" transform="rotate(-29 484 225)" fill="#3ea76a"></ellipse>
+                <ellipse cx="505" cy="181" rx="42" ry="23" transform="rotate(24 505 181)" fill="#2f915b"></ellipse>
+                <g class="crown-flower" transform="translate(285 174)">
+                  <circle cx="0" cy="-16" r="14" fill="#ff7e73"></circle><circle cx="15" cy="-5" r="14" fill="#ff7e73"></circle><circle cx="9" cy="13" r="14" fill="#ff7e73"></circle><circle cx="-9" cy="13" r="14" fill="#ff7e73"></circle><circle cx="-15" cy="-5" r="14" fill="#ff7e73"></circle><circle r="10" fill="#ffd34e"></circle>
+                </g>
+                <g class="crown-flower" transform="translate(512 153)">
+                  <circle cx="0" cy="-16" r="14" fill="#b876d9"></circle><circle cx="15" cy="-5" r="14" fill="#b876d9"></circle><circle cx="9" cy="13" r="14" fill="#b876d9"></circle><circle cx="-9" cy="13" r="14" fill="#b876d9"></circle><circle cx="-15" cy="-5" r="14" fill="#b876d9"></circle><circle r="10" fill="#ffd34e"></circle>
+                </g>
+              </g>
+
+              <path class="main-stem" d="M399 445c-5-42 5-81 0-119" fill="none" stroke="#2b8453" stroke-linecap="round" stroke-width="14"></path>
+              <path d="M397 392c-36-2-55-17-70-41" fill="none" stroke="#2b8453" stroke-linecap="round" stroke-width="9"></path>
+              <path d="M402 370c34-2 54-18 69-43" fill="none" stroke="#2b8453" stroke-linecap="round" stroke-width="9"></path>
+              <ellipse class="leaf leaf-left" cx="329" cy="344" rx="48" ry="25" transform="rotate(25 329 344)" fill="#45ad6f"></ellipse>
+              <ellipse class="leaf leaf-right" cx="470" cy="320" rx="48" ry="25" transform="rotate(-27 470 320)" fill="#3b9c62"></ellipse>
+              <path class="plant-head" d="M399 344c-38-11-56-38-43-68 14-33 71-34 87 0 15 32-7 59-44 68Z" fill="#55b976"></path>
+              <path d="M364 298c20-7 45-7 70 0" fill="none" stroke="#84d49c" stroke-linecap="round" stroke-width="6" opacity="0.72"></path>
+              <g class="plant-face">
+                <ellipse cx="384" cy="307" rx="8" ry="10" fill="#173e35"></ellipse>
+                <ellipse cx="416" cy="307" rx="8" ry="10" fill="#173e35"></ellipse>
+                <circle cx="381" cy="303" r="2.5" fill="#fff"></circle>
+                <circle cx="413" cy="303" r="2.5" fill="#fff"></circle>
+                <path id="plant-mouth" d="M389 324c7 5 15 5 22 0" fill="none" stroke="#173e35" stroke-linecap="round" stroke-width="5"></path>
+                <ellipse class="plant-cheek" cx="374" cy="322" rx="9" ry="4" fill="#ef7a77" opacity="0.72"></ellipse>
+                <ellipse class="plant-cheek" cx="426" cy="322" rx="9" ry="4" fill="#ef7a77" opacity="0.72"></ellipse>
+              </g>
+
+              <g id="surprise-flower" class="surprise-flower" transform="translate(400 257)">
+                <path d="M0 16V40" stroke="#2b8453" stroke-width="7"></path>
+                <circle cx="0" cy="-18" r="18" fill="#ff7b75"></circle>
+                <circle cx="18" cy="-6" r="18" fill="#ff7b75"></circle>
+                <circle cx="11" cy="15" r="18" fill="#ff7b75"></circle>
+                <circle cx="-11" cy="15" r="18" fill="#ff7b75"></circle>
+                <circle cx="-18" cy="-6" r="18" fill="#ff7b75"></circle>
+                <circle r="13" fill="#ffd34e"></circle>
+              </g>
+
+              <g id="plant-straw" class="plant-straw">
+                <path d="M400 326c12 12 31 19 48 21v-73h30" fill="none" stroke="#eb6656" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"></path>
+                <path d="M452 289h25" stroke="#fff5d0" stroke-width="3"></path>
+              </g>
+
+              <g id="umbrella" class="umbrella" transform="translate(400 232)">
+                <path d="M-76 5c14-70 139-70 153 0-20-11-32-11-51 0-18-11-32-11-51 0-18-11-32-11-51 0Z" fill="#ff755f" stroke="#234f43" stroke-linejoin="round" stroke-width="7"></path>
+                <path d="M0 2v94c0 24 29 25 29 3" fill="none" stroke="#234f43" stroke-linecap="round" stroke-width="7"></path>
+                <path d="M-25 5C-18-42-7-57 0-59 9-54 20-37 26 5" fill="#ffbd45" stroke="#234f43" stroke-width="5"></path>
+              </g>
+            </g>
+
+            <g class="flowerpot" filter="url(#soft-shadow)" aria-hidden="true">
+              <ellipse cx="400" cy="449" rx="82" ry="22" fill="#573f32"></ellipse>
+              <path d="M330 463h140l-18 97c-3 18-19 30-37 30h-30c-18 0-34-12-37-30Z" fill="url(#pot-clay)" stroke="#8f4338" stroke-width="7"></path>
+              <rect x="318" y="443" width="164" height="39" rx="14" fill="#e66b4d" stroke="#8f4338" stroke-width="7"></rect>
+              <ellipse cx="400" cy="449" rx="68" ry="13" fill="#5e4734"></ellipse>
+              <circle cx="376" cy="452" r="4" fill="#957256"></circle>
+              <circle cx="424" cy="447" r="5" fill="#957256"></circle>
+              <path d="M363 505c26 13 49 15 75 3" fill="none" stroke="#f3a27c" stroke-linecap="round" stroke-width="6" opacity="0.72"></path>
+            </g>
+          </svg>
+
+          <div class="reaction-bubble" id="reaction-bubble" hidden>Too much water!</div>
+          <div class="droplet-layer" id="droplet-layer" aria-hidden="true"></div>
+
+          <div
+            class="watering-can"
+            id="watering-can"
+            role="button"
+            tabindex="0"
+            aria-label="Watering can. Drag to move it. Use the tilt control or press Space to pour. Arrow keys move it."
+            aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Space Home"
+          >
+            <svg viewBox="0 0 220 145" aria-hidden="true" focusable="false">
+              <g class="can-art">
+                <path d="M89 65 28 91 20 74l64-37Z" fill="#55a8bc" stroke="#173e46" stroke-linejoin="round" stroke-width="7"></path>
+                <path d="m29 92-19 3 8-19Z" fill="#80c9d7" stroke="#173e46" stroke-linejoin="round" stroke-width="6"></path>
+                <rect x="81" y="43" width="102" height="80" rx="24" fill="#65b8ca" stroke="#173e46" stroke-width="8"></rect>
+                <path d="M164 59c34-44 73 4 40 41-8 9-18 13-28 14" fill="none" stroke="#173e46" stroke-linecap="round" stroke-width="10"></path>
+                <path d="M107 44c-1-24 31-31 47-7" fill="none" stroke="#173e46" stroke-linecap="round" stroke-width="9"></path>
+                <path d="M116 73c13-10 32-7 41 4" fill="none" stroke="#a9e5ed" stroke-linecap="round" stroke-width="7"></path>
+                <circle cx="105" cy="91" r="6" fill="#173e46"></circle>
+                <circle cx="136" cy="91" r="6" fill="#173e46"></circle>
+                <path d="M112 106c7 6 14 6 21 0" fill="none" stroke="#173e46" stroke-linecap="round" stroke-width="5"></path>
+              </g>
+            </svg>
+            <span class="drag-label" aria-hidden="true">drag me</span>
+          </div>
+        </div>
+
+        <div class="interaction-deck">
+          <label class="tilt-control" for="tilt-control">
+            <span class="tilt-label">
+              <strong>Tilt the can</strong>
+              <output id="tilt-output" for="tilt-control">0°</output>
+            </span>
+            <input id="tilt-control" type="range" min="0" max="55" step="1" value="0">
+          </label>
+          <p class="pour-hint" id="pour-hint">
+            <span aria-hidden="true">↖</span> Drag above the plant, then tip to pour.
+          </p>
+          <button class="bloom-button" id="bloom-button" type="button" hidden>
+            Let the plant bloom
+            <span aria-hidden="true">✿</span>
+          </button>
+        </div>
+      </section>
+
+      <aside class="plant-diary" aria-labelledby="diary-title">
+        <div class="diary-title-row">
+          <div>
+            <p class="eyebrow">Field notes</p>
+            <h2 id="diary-title">Plant diary</h2>
+          </div>
+          <span class="scribble" aria-hidden="true">〰</span>
+        </div>
+
+        <div class="stat-card mood-card">
+          <span class="stat-label">Current mood</span>
+          <strong id="mood-text">Suspicious but hydrated</strong>
+          <p id="mood-note">It saw you pick up the can.</p>
+        </div>
+
+        <div class="diary-stats">
+          <div class="stat-card">
+            <span class="stat-label">Watering attempts</span>
+            <strong><span id="attempt-count">0</span><span class="stat-total"> / ∞</span></strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Drama level</span>
+            <strong id="drama-label">Calm-ish</strong>
+          </div>
+        </div>
+
+        <div class="growth-card">
+          <div class="growth-heading">
+            <span class="stat-label">Trust earned</span>
+            <span id="growth-text">0 / 6</span>
+          </div>
+          <div
+            class="growth-track"
+            id="growth-track"
+            role="progressbar"
+            aria-label="Trust earned toward flowering"
+            aria-valuemin="0"
+            aria-valuemax="6"
+            aria-valuenow="0"
+          >
+            <span id="growth-fill"></span>
+          </div>
+          <p>Survive six watering attempts to unlock a peaceful bloom.</p>
+        </div>
+
+        <div class="reaction-log">
+          <h3>Latest theatrics</h3>
+          <ol id="reaction-list">
+            <li class="empty-log">No incidents. Yet.</li>
+          </ol>
+        </div>
+
+        <details class="how-to">
+          <summary>How to water responsibly</summary>
+          <ul>
+            <li>Drag the can above the plant.</li>
+            <li>Use the slider to tilt it past 25°.</li>
+            <li>Keyboard: arrows move, Space pours, and Home resets the can.</li>
+            <li>Every successful pour triggers a random reaction.</li>
+          </ul>
+        </details>
+
+        <p class="tiny-note">No plants were overwatered in the making of this page.</p>
+      </aside>
+    </main>
+
+    <footer>
+      <p>Made with sunlight, SVG, and questionable plant psychology.</p>
+      <span aria-hidden="true">❋</span>
+    </footer>
+
+    <p class="sr-only" id="live-status" role="status" aria-live="polite" aria-atomic="true">
+      The plant is ready.
+    </p>
+  </body>
+</html>

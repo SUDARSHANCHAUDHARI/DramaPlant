@@ -1,0 +1,37 @@
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+
+# Secrets and machine-local configuration
+.env
+.env.*
+!.env.example
+local.properties
+secure.properties
+credentials.json
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Dependencies and package-manager state
+node_modules/
+.pnpm-store/
+
+# Generated output and caches
+coverage/
+dist/
+.cache/
+.parcel-cache/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
