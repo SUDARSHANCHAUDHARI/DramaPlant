@@ -1,89 +1,211 @@
 # DramaPlant
 
-DramaPlant is a cute, dependency-free interactive web toy about a small plant with very large feelings about water.
+> A tiny interactive plant with very big feelings about being watered.
 
-Drag the watering can above the plant, tilt it past 25°, and discover one of ten shuffled dramatic reactions. After six successful watering attempts, the plant can finally grow into a healthy flowering plant.
+DramaPlant is a cute, dependency-free browser experience built with HTML, CSS, inline SVG, and vanilla JavaScript. Drag the watering can above the flowerpot, tilt it past 25°, and watch the plant respond with one of ten shuffled dramatic reactions. After six successful watering attempts, the plant can finally become a healthy flowering plant.
 
-## Features
+The project is designed for direct deployment to GitHub Pages without a build step, runtime dependencies, backend, or external asset hosting.
 
-- Drag-and-drop watering can with pointer, touch, and keyboard support
-- Independent tilt control and SVG collision detection
-- Ten plant reactions, including an umbrella, escape legs, a temporary giant tree, and returned water
-- Visible mood, watering-attempt count, trust progress, and recent reaction history
-- SVG scenery and CSS-generated water particles with no external assets
-- Generated Web Audio effects with a persistent sound toggle
-- Responsive layout, live status announcements, visible focus states, and semantic controls
-- `prefers-reduced-motion` support
-- No build step or production dependencies
+## Highlights
+
+- Pointer and touch dragging with independent watering-can tilt
+- Keyboard movement and pouring controls
+- SVG-based collision detection between the can and plant
+- Ten shuffled reactions without immediate repetition
+- Visible mood, watering-attempt count, trust progress, and reaction history
+- CSS-generated water particles and code-generated Web Audio effects
+- Persistent sound preference with no analytics or account requirement
+- Responsive room scene for desktop and mobile layouts
+- Screen-reader announcements, semantic controls, and visible keyboard focus
+- Reduced-motion behavior through `prefers-reduced-motion`
+- Restrictive Content Security Policy and no external runtime requests
+- Direct GitHub Pages deployment from the repository root
+
+## Plant reactions
+
+Every successful pour draws from a shuffled reaction deck:
+
+1. Opens an emergency umbrella
+2. Moves away from the water
+3. Grows downward on principle
+4. Becomes a giant tree briefly
+5. Drinks every last drop
+6. Displays a “Too much water” complaint
+7. Shakes water from its leaves
+8. Grows legs and attempts to escape
+9. Shows a flower and quickly hides it
+10. Gives the water back to the watering can
+
+Once six watering attempts have earned enough trust, the **Let the plant bloom** control unlocks the permanent healthy flowering state.
+
+## Technology
+
+| Area | Implementation |
+| --- | --- |
+| Structure | Semantic HTML5 |
+| Artwork | Inline SVG |
+| Styling | Native CSS with responsive media queries |
+| Interaction | Vanilla JavaScript and Pointer Events |
+| Collision | SVG target bounds and rotated nozzle geometry |
+| Sound | Web Audio API oscillators and generated noise |
+| Persistence | `localStorage` for the sound preference only |
+| Deployment | Static files served directly by GitHub Pages |
+| Verification | Dependency-free Node.js release checks |
+
+There are no production packages, frameworks, analytics SDKs, fonts, images, or audio files downloaded at runtime.
 
 ## Requirements
 
-- Node.js 20 or newer
-- pnpm 10
+- Node.js 20 or newer for repository verification
+- pnpm 10 for the documented commands
+- A modern browser with Pointer Events, SVG, and Web Audio support
 
-## Run locally
+No dependency installation or compilation is required to run the site.
 
-Because the project uses only static files, you can open `index.html` directly. A small local server is recommended so the manifest and asset paths behave exactly as they will on GitHub Pages:
+## Getting started
+
+Clone the repository and enter the project directory:
+
+```bash
+git clone https://github.com/SUDARSHANCHAUDHARI/DramaPlant.git
+cd DramaPlant
+```
+
+The repository is private before public release, so cloning requires access to the `SUDARSHANCHAUDHARI` GitHub account or an authorized collaborator account.
+
+### Run locally
+
+The site can be opened directly through `index.html`. A local static server is recommended so the manifest and relative paths behave like GitHub Pages:
 
 ```bash
 python3 -m http.server 8080
 ```
 
-Then visit `http://localhost:8080`.
+Visit `http://localhost:8080`.
+
+## Controls
+
+| Input | Action |
+| --- | --- |
+| Mouse or touch drag | Move the watering can |
+| Tilt slider | Rotate the can from 0° to 55° |
+| Arrow keys | Move the focused watering can |
+| Shift + Arrow key | Move the can a larger distance |
+| Space or Enter | Tilt and pour from the focused can |
+| Home | Return the can to its starting position |
+| Sound button | Enable or mute generated effects |
+| Reset button | Clear attempts, growth, mood, and reaction history |
+
+A pour counts only when the can is tilted to at least 25° and the calculated nozzle position overlaps the plant’s watering target.
+
+## Accessibility
+
+DramaPlant includes:
+
+- A skip link and semantic page landmarks
+- Native buttons and a native range input
+- Keyboard-operable watering-can movement and pouring
+- Documented `aria-keyshortcuts` for the draggable can
+- Polite live-region announcements for plant reactions and state changes
+- Visible focus treatment for interactive elements
+- Text-based mood and history so reactions are not communicated by animation alone
+- A `prefers-reduced-motion: reduce` mode that shortens or removes nonessential motion
+- Touch targets and layouts suitable for narrow mobile screens
+
+## Privacy and security
+
+DramaPlant has no backend, accounts, cookies, advertising, analytics, telemetry, or network API calls. It stores only the `dramaplant-sound` preference in the browser’s local storage.
+
+The page includes a Content Security Policy restricting scripts and assets to the project itself, blocking network connections and embedded objects. Generated sounds are synthesized locally through Web Audio; the project does not access a microphone or record audio.
+
+See [SECURITY.md](SECURITY.md) for private vulnerability-reporting instructions.
 
 ## Verify
 
-Run the complete production-readiness check before committing or deploying:
+Run the complete production-readiness gate before committing or deploying:
 
 ```bash
 pnpm verify
 ```
 
-The verification command checks JavaScript syntax, required files, manifest metadata, local asset references, unique DOM IDs, JavaScript-to-DOM bindings, all ten reaction styles, security-sensitive browser APIs, CSP coverage, and key accessibility hooks.
+Run the equivalent test command with:
 
-## Controls
+```bash
+pnpm test
+```
 
-- **Mouse or touch:** drag the watering can, then use the tilt slider to pour.
-- **Keyboard:** focus the watering can and use the arrow keys to move it. Press <kbd>Space</kbd> or <kbd>Enter</kbd> to pour and <kbd>Home</kbd> to return it to its starting position. Hold <kbd>Shift</kbd> with an arrow key to move farther.
-- **Sound:** use the Sound button to enable or mute generated effects.
-- **Reset:** clears attempts, mood, growth, and reaction history.
+Verification covers:
+
+- JavaScript syntax
+- Required production and documentation files
+- Manifest metadata and project-safe relative paths
+- Local asset existence
+- Unique HTML IDs and JavaScript-to-DOM bindings
+- All ten reaction definitions and CSS behaviors
+- Unsafe dynamic HTML execution APIs
+- Content Security Policy directives
+- Keyboard, touch, live-region, and reduced-motion hooks
+
+Visual and interaction changes should additionally receive a manual browser review using pointer, keyboard, sound-off, mobile-width, and reduced-motion configurations. Screenshots, recordings, and browser traces are not part of this project’s verification workflow.
 
 ## Deploy to GitHub Pages
 
-1. Push these files to a GitHub repository.
-2. Open **Settings → Pages** in the repository.
-3. Under **Build and deployment**, choose **Deploy from a branch**.
-4. Select the `main` branch and the `/ (root)` folder, then save.
+DramaPlant deploys directly from source; no generated build directory or GitHub Actions workflow is required.
 
-The included `.nojekyll` file tells GitHub Pages to serve the static project directly. No GitHub Actions workflow or build command is required.
+1. Push the verified commit to the `main` branch.
+2. Open **Settings → Pages** in the GitHub repository.
+3. Under **Build and deployment**, select **Deploy from a branch**.
+4. Choose the `main` branch and `/ (root)` folder.
+5. Save and wait for GitHub Pages to publish the site.
+6. Manually verify dragging, keyboard controls, sound, mobile layout, and reduced motion on the deployed URL.
+
+The `.nojekyll` file instructs GitHub Pages to serve the repository’s static files directly. Relative asset and manifest paths are compatible with a project Pages URL.
 
 ## Project structure
 
 ```text
 DramaPlant/
+├── .gitignore          # Secrets, local files, caches, and generated output
+├── .nojekyll           # Direct GitHub Pages serving
 ├── AGENTS.md           # Repository-specific development instructions
 ├── CHANGELOG.md        # User-facing release history
+├── LICENSE             # MIT license text
+├── README.md           # Project documentation
+├── SECURITY.md         # Vulnerability-reporting guidance
+├── favicon.svg         # Standalone project icon
 ├── index.html          # Semantic page and inline SVG artwork
-├── styles.css          # Visual system, responsive layout, and animation
-├── script.js           # Dragging, collision, reactions, particles, and audio
-├── scripts/verify.mjs  # Dependency-free production verification
-├── package.json        # Reproducible pnpm commands
-├── favicon.svg         # Project icon
+├── package.json        # Reproducible pnpm commands and version metadata
+├── script.js           # State, dragging, collision, reactions, particles, and audio
+├── scripts/
+│   └── verify.mjs      # Dependency-free production verification
 ├── site.webmanifest    # Installable-site metadata
-├── SECURITY.md         # Private vulnerability-reporting guidance
-├── .nojekyll           # Direct GitHub Pages serving
-└── README.md
+└── styles.css          # Visual system, animation, responsive and reduced-motion styles
 ```
 
 ## Release checklist
 
 1. Run `pnpm verify` and confirm every check passes.
 2. Confirm `git status --short` contains only intentional changes.
-3. Push the verified commit to `main`.
-4. Enable GitHub Pages from the repository root.
-5. Perform a manual interaction check with mouse, keyboard, and a narrow mobile viewport.
-6. Keep the previous commit available as the rollback point.
+3. Review [CHANGELOG.md](CHANGELOG.md) and update the version when required.
+4. Push the verified commit to `main`.
+5. Perform the manual browser interaction review.
+6. Enable GitHub Pages only after the private production candidate is approved.
+7. Keep the previous commit available as the rollback point.
+
+## Author
+
+**Sudarshan Chaudhari**<br>
+Founder and solo developer at **SudarshanTechLabs**<br>
+Bangkok, Thailand
+
+- GitHub: [@SUDARSHANCHAUDHARI](https://github.com/SUDARSHANCHAUDHARI)
+- Business and project contact: [sudarshantechlabs@gmail.com](mailto:sudarshantechlabs@gmail.com)
+- Git identity: `SUDARSHANCHAUDHARI <sunny.sudarshan@gmail.com>`
+
+DramaPlant is designed, developed, and maintained by Sudarshan Chaudhari under SudarshanTechLabs.
 
 ## License
 
-MIT © 2026 Sudarshan Chaudhari
+DramaPlant is available under the [MIT License](LICENSE).
+
+Copyright © 2026 Sudarshan Chaudhari. All rights reserved except as granted by the MIT License.
