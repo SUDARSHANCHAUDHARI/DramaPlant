@@ -37,6 +37,16 @@ function assert(condition, message) {
   }
 }
 
+function contrastRatio(first, second) {
+  const luminance = (hex) => {
+    const channels = hex.slice(1).match(/.{2}/g).map((value) => Number.parseInt(value, 16) / 255);
+    const linear = channels.map((value) => value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+  };
+  const values = [luminance(first), luminance(second)].sort((a, b) => b - a);
+  return (values[0] + 0.05) / (values[1] + 0.05);
+}
+
 const html = read("index.html");
 const css = read("styles.css");
 const javascript = read("script.js");
@@ -95,6 +105,22 @@ assert(html.includes('class="skip-link"'), "Skip link is required");
 assert(html.includes('aria-keyshortcuts='), "Watering can keyboard shortcuts must be documented in markup");
 assert(css.includes("prefers-reduced-motion: reduce"), "Reduced-motion styles are required");
 assert(css.includes("touch-action: none"), "Touch drag handling is required");
+for (const color of ["#15152a", "#fff5df", "#ff5d5d", "#4f7cff", "#ffd166", "#58d6a9", "#b695ff"]) {
+  assert(css.toLowerCase().includes(color), `Missing shared TinyChaos color ${color}`);
+}
+assert(html.includes('href="https://sudarshanchaudhari.github.io/TinyChaos/"'), "TinyChaos gallery link is required");
+assert(html.includes("DramaPlant · by Sudarshan Chaudhari"), "Author attribution is required");
+assert(/outline:\s*4px solid var\(--blue\)/.test(css), "Focus treatment must use TinyChaos blue");
+assert(/\.watering-can:focus-visible\s*\{[^}]*var\(--blue\)[^}]*var\(--paper\)[^}]*var\(--ink\)/s.test(css), "Watering can focus needs a contrast halo");
+assert(/input\[type="range"\]:focus-visible\s*\{[^}]*var\(--blue\)[^}]*var\(--paper\)[^}]*var\(--ink\)/s.test(css), "Range focus needs a contrast halo");
+assert(/--display:\s*Impact/.test(css), "Display typography must use the condensed family stack");
+assert(/--body:\s*"Arial Rounded MT Bold"/.test(css), "Body typography must use the rounded family stack");
+assert(/overflow-x:\s*clip/.test(css), "Page overflow must be clipped without a fixed minimum width");
+assert(contrastRatio("#4f7cff", "#fff5df") >= 3, "Blue focus must contrast with paper");
+assert(contrastRatio("#4f7cff", "#15152a") >= 3, "Blue focus must contrast with ink");
+for (const rule of css.matchAll(/(?:^|\n)(?:html|body)\s*\{([^}]*)\}/g)) {
+  assert(!/min-width:\s*(?:280|320)px/.test(rule[1]), "Page-level minimum width blocks zoom reflow");
+}
 assert(javascript.includes('event.key === " " || event.key === "Enter"'), "Keyboard pouring is required");
 assert(readme.includes("pnpm verify"), "README must document the verification command");
 assert(readme.includes("Deploy to GitHub Pages"), "README must document deployment");

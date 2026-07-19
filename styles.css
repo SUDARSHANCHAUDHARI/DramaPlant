@@ -1,18 +1,22 @@
 :root {
   --sky: #8ed8ff;
-  --sun: #ffd34e;
+  --sun: #ffd166;
   --cream: #fff4bc;
-  --paper: #fffdf2;
+  --paper: #fff5df;
   --leaf: #2b8453;
-  --leaf-light: #55b976;
+  --leaf-light: #58d6a9;
   --clay: #e66b4d;
-  --coral: #ff755f;
-  --ink: #173e35;
+  --coral: #ff5d5d;
+  --blue: #4f7cff;
+  --butter: #ffd166;
+  --mint: #58d6a9;
+  --lilac: #b695ff;
+  --ink: #15152a;
   --muted-ink: #496b62;
   --line: #c6d7c5;
   --shadow: 0 18px 50px rgba(25, 69, 54, 0.16);
-  --display: "Cooper Black", "Rockwell Extra Bold", Georgia, serif;
-  --body: "Trebuchet MS", "Avenir Next", Avenir, sans-serif;
+  --display: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  --body: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", ui-rounded, system-ui, sans-serif;
   --utility: "Courier New", ui-monospace, monospace;
 }
 
@@ -28,9 +32,10 @@ html {
 }
 
 body {
-  min-width: 320px;
+  min-width: 0;
   min-height: 100vh;
   margin: 0;
+  overflow-x: clip;
   color: var(--ink);
   background:
     radial-gradient(circle at 8% 12%, rgba(255, 255, 255, 0.95) 0 5%, transparent 5.2%),
@@ -47,6 +52,24 @@ input {
 
 button {
   color: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+[role="button"]:focus-visible {
+  outline: 4px solid var(--blue);
+  outline-offset: 4px;
+}
+
+.brand:focus-visible,
+.icon-button:focus-visible,
+.bloom-button:focus-visible,
+.tinychaos-credit a:focus-visible {
+  box-shadow:
+    0 0 0 4px var(--paper),
+    0 0 0 12px var(--ink);
 }
 
 [hidden] {
@@ -127,10 +150,10 @@ button {
   justify-content: center;
   min-height: 44px;
   padding: 9px 14px;
-  border: 2px solid var(--ink);
+  border: 3px solid var(--ink);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--paper);
+  box-shadow: 3px 3px 0 var(--blue);
   font-size: 0.88rem;
   font-weight: 800;
   cursor: pointer;
@@ -139,14 +162,14 @@ button {
 
 .icon-button:hover,
 .bloom-button:hover {
-  background: #fff;
-  box-shadow: 1px 2px 0 var(--ink);
+  background: var(--butter);
+  box-shadow: 1px 2px 0 var(--blue);
   transform: translate(2px, 1px);
 }
 
 .icon-button:active,
 .bloom-button:active {
-  box-shadow: 0 0 0 var(--ink);
+  box-shadow: 0 0 0 var(--blue);
   transform: translate(3px, 3px);
 }
 
@@ -224,7 +247,7 @@ h2 {
   padding: 8px 12px;
   border: 2px solid var(--ink);
   border-radius: 999px;
-  background: #dbf3bb;
+  background: var(--mint);
   font-size: 0.82rem;
   font-weight: 800;
 }
@@ -323,8 +346,11 @@ h2 {
 
 .watering-can:focus-visible {
   border-radius: 22px;
-  outline: 5px solid #fff;
-  box-shadow: 0 0 0 9px var(--ink);
+  outline: 4px solid var(--blue);
+  outline-offset: 5px;
+  box-shadow:
+    0 0 0 4px var(--paper),
+    0 0 0 12px var(--ink);
 }
 
 .watering-can svg {
@@ -560,8 +586,11 @@ input[type="range"]::-moz-range-thumb {
 }
 
 input[type="range"]:focus-visible {
-  outline: 4px solid #fff;
-  box-shadow: 0 0 0 7px var(--ink);
+  outline: 4px solid var(--blue);
+  outline-offset: 4px;
+  box-shadow:
+    0 0 0 4px var(--paper),
+    0 0 0 11px var(--ink);
 }
 
 .pour-hint {
@@ -662,7 +691,7 @@ input[type="range"]:focus-visible {
 }
 
 .diary-stats .stat-card:nth-child(1) {
-  background: #dff5ff;
+  background: var(--lilac);
   transform: rotate(0.5deg);
 }
 
@@ -759,7 +788,7 @@ input[type="range"]:focus-visible {
 }
 
 .how-to summary:focus-visible {
-  outline: 4px solid var(--ink);
+  outline: 4px solid var(--blue);
   outline-offset: 3px;
 }
 
@@ -785,9 +814,15 @@ footer {
   gap: 15px;
   align-items: center;
   justify-content: center;
-  width: min(1440px, calc(100% - 40px));
+  width: fit-content;
+  max-width: calc(100% - 20px);
   margin: 26px auto;
-  color: #285f55;
+  padding: 9px 12px;
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 4px 4px 0 var(--blue);
   font-size: 0.82rem;
   font-weight: 800;
   text-align: center;
@@ -795,6 +830,21 @@ footer {
 
 footer p {
   margin: 0;
+}
+
+.tinychaos-credit {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 0.8rem;
+}
+
+.tinychaos-credit a {
+  color: inherit;
+  font-weight: 900;
+  text-decoration-color: var(--blue);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 3px;
 }
 
 .sr-only {
