@@ -47,6 +47,43 @@ function contrastRatio(first, second) {
   return (values[0] + 0.05) / (values[1] + 0.05);
 }
 
+function ruleBody(selector, source = css) {
+  const start = source.indexOf(`${selector} {`);
+  if (start < 0) {
+    failures.push(`Missing CSS rule ${selector}`);
+    return "";
+  }
+  return source.slice(source.indexOf("{", start) + 1, source.indexOf("}", start));
+}
+
+function declaration(selector, property, source = css) {
+  const match = ruleBody(selector, source).match(
+    new RegExp(`(?:^|\\n)\\s*${property.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&")}\\s*:\\s*([\\s\\S]*?);`),
+  );
+  if (!match) {
+    failures.push(`Missing ${property} in ${selector}`);
+    return "";
+  }
+  return match[1].trim();
+}
+
+function resolvedColor(value, seen = new Set()) {
+  const variable = value.match(/^var\(--([^)]+)\)$/);
+  if (!variable) {
+    if (!/^#[0-9a-f]{6}$/i.test(value)) {
+      failures.push(`Unsupported color ${value}`);
+      return "#000000";
+    }
+    return value.toLowerCase();
+  }
+  if (seen.has(variable[1])) {
+    failures.push(`Circular CSS variable --${variable[1]}`);
+    return "#000000";
+  }
+  seen.add(variable[1]);
+  return resolvedColor(declaration(":root", `--${variable[1]}`), seen);
+}
+
 const html = read("index.html");
 const css = read("styles.css");
 const javascript = read("script.js");
@@ -110,6 +147,7 @@ for (const color of ["#15152a", "#fff5df", "#ff5d5d", "#4f7cff", "#ffd166", "#58
 }
 assert(html.includes('href="https://sudarshanchaudhari.github.io/TinyChaos/"'), "TinyChaos gallery link is required");
 assert(html.includes("DramaPlant · by Sudarshan Chaudhari"), "Author attribution is required");
+assert(html.includes("Made with sunlight, SVG, and questionable plant psychology."), "Original footer story copy is required");
 assert(/outline:\s*4px solid var\(--blue\)/.test(css), "Focus treatment must use TinyChaos blue");
 assert(/\.watering-can:focus-visible\s*\{[^}]*var\(--blue\)[^}]*var\(--paper\)[^}]*var\(--ink\)/s.test(css), "Watering can focus needs a contrast halo");
 assert(/input\[type="range"\]:focus-visible\s*\{[^}]*var\(--blue\)[^}]*var\(--paper\)[^}]*var\(--ink\)/s.test(css), "Range focus needs a contrast halo");
@@ -118,9 +156,34 @@ assert(/--body:\s*"Arial Rounded MT Bold"/.test(css), "Body typography must use 
 assert(/overflow-x:\s*clip/.test(css), "Page overflow must be clipped without a fixed minimum width");
 assert(contrastRatio("#4f7cff", "#fff5df") >= 3, "Blue focus must contrast with paper");
 assert(contrastRatio("#4f7cff", "#15152a") >= 3, "Blue focus must contrast with ink");
-for (const rule of css.matchAll(/(?:^|\n)(?:html|body)\s*\{([^}]*)\}/g)) {
-  assert(!/min-width:\s*(?:280|320)px/.test(rule[1]), "Page-level minimum width blocks zoom reflow");
+const lilacSurface = resolvedColor(declaration(".diary-stats .stat-card:nth-child(1)", "background"));
+for (const selector of [".stat-label", ".stat-total"]) {
+  assert(
+    contrastRatio(resolvedColor(declaration(selector, "color")), lilacSurface) >= 4.5,
+    `${selector} must meet WCAG AA on exact lilac`,
+  );
 }
+
+const widths = [...css.matchAll(/@media \(max-width: (\d+)px\)\s*\{/g)].map((match) => Number(match[1]));
+assert(JSON.stringify(widths) === JSON.stringify([1040, 720, 430]), "Width breakpoints must cover laptop, tablet, and 320/375px layouts");
+const positions = [
+  css.indexOf("@media (max-width: 1040px) {"),
+  css.indexOf("@media (max-width: 720px) {"),
+  css.indexOf("@media (max-width: 430px) {"),
+  css.indexOf("@media (max-width: 720px) and (max-height: 500px) {"),
+  css.indexOf("@media (prefers-reduced-motion: reduce) {"),
+];
+assert(positions.every((position) => position >= 0), "A required responsive media query is missing");
+assert(JSON.stringify([...positions].sort((a, b) => a - b)) === JSON.stringify(positions), "Responsive cascade order changed");
+const narrowSection = css.slice(positions[3], positions[4]);
+assert(declaration(".game-stage", "height", narrowSection) === "420px", "Narrow/short stage height changed");
+assert(declaration(".game-stage", "min-height", narrowSection) === "420px", "Narrow/short stage minimum changed");
+assert(!/\.game-stage\s*\{[^}]*(?:height|min-height)\s*:/s.test(css.slice(positions[4])), "A later rule overrides narrow/short stage geometry");
+assert(declaration("body", "overflow-y") === "auto", "Short viewports must retain vertical scrolling");
+assert(declaration("body", "overflow-x") === "clip", "Horizontal page overflow must remain clipped");
+assert(declaration("body", "min-width") === "0", "Body must not impose a positive minimum width");
+assert(!/min-width\s*:\s*(?!0(?:px)?\s*;)/.test(ruleBody("html")), "HTML has a positive minimum width");
+assert(/1440px/.test(declaration(".game-layout", "width")), "Base rule must retain large-desktop cap");
 assert(javascript.includes('event.key === " " || event.key === "Enter"'), "Keyboard pouring is required");
 assert(readme.includes("pnpm verify"), "README must document the verification command");
 assert(readme.includes("Deploy to GitHub Pages"), "README must document deployment");

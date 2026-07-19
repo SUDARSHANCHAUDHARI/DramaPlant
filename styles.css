@@ -36,6 +36,7 @@ body {
   min-height: 100vh;
   margin: 0;
   overflow-x: clip;
+  overflow-y: auto;
   color: var(--ink);
   background:
     radial-gradient(circle at 8% 12%, rgba(255, 255, 255, 0.95) 0 5%, transparent 5.2%),
@@ -655,7 +656,7 @@ input[type="range"]:focus-visible {
 }
 
 .stat-label {
-  color: var(--muted-ink);
+  color: var(--ink);
   font-family: var(--utility);
   font-size: 0.68rem;
   font-weight: 800;
@@ -706,7 +707,7 @@ input[type="range"]:focus-visible {
 }
 
 .stat-total {
-  color: var(--muted-ink);
+  color: var(--ink);
   font-size: 0.75rem;
 }
 
@@ -1126,6 +1127,13 @@ footer p {
 
   .diary-stats {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 720px) and (max-height: 500px) {
+  .game-stage {
+    height: 420px;
+    min-height: 420px;
   }
 }
 
